@@ -1,0 +1,31 @@
+[user]
+	name = Ali AYOUBI
+	email = ali.ayoubi@murex.com
+	co = checkout
+	com = commit
+	st = status
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+[core]
+	autocrlf = input
+	editor = gvim
+[diff]
+	guitool = kdiff3
+[difftool "kdiff3"]
+	path = D:/Program Files/KDiff3/kdiff3.exe
+	cmd = \"D:/Program Files/KDiff3/kdiff3.exe\" \"$LOCAL\" \"$REMOTE\"
+[merge]
+	tool = p4merge
+[mergetool "p4merge"]
+	path = c:/Program Files/Perforce/p4merge.exe
+	cmd = \"c:/Program Files/Perforce/p4merge.exe\" \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[alias]
+	st = status -sb
+	lg = log --oneline --decorate
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+[git-p4]
+	detectRenames = true
+	interactiveSubmit = true
+[color]
+	ui = true
+[url "https://"]
+	insteadOf = git://

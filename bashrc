@@ -121,3 +121,4 @@ export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
 
 # alias
 alias lls='ls -ltr'
+alias aussh='ssh autoengine@'

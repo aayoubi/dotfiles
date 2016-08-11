@@ -3,11 +3,13 @@
 git submodule init
 git submodule update
 
-ln -s ./bashrc ~/.bashrc
-ln -s ./vimrc ~/.vimrc
-ln -s ./gitconfig ~/.gitconfig
-ln -s ./zshrc ~/.zshrc
-ln -s ./tmux.conf ~/.tmux.conf
+rm -i ~/.bashrc ~/.vimrc ~/.gitconfig ~/.zshrc ~/.tmux.conf
+
+ln -s $(pwd)/bashrc ~/.bashrc
+ln -s $(pwd)/vimrc ~/.vimrc
+ln -s $(pwd)/gitconfig ~/.gitconfig
+ln -s $(pwd)/zshrc ~/.zshrc
+ln -s $(pwd)/tmux.conf ~/.tmux.conf
 
 mkdir -p ~/.vim/colors/
 cp vim/colors/wombat256mod.vim  ~/.vim/colors/

@@ -12,12 +12,18 @@ set smartcase
 set hlsearch
 syntax on
 
+set foldlevel=99
 set history=50
 set undolevels=100
 set softtabstop=4
-set tabstop=4
 set shiftwidth=4
 set scrolloff=2
+set foldmethod=syntax
+
+set backspace=2
+set ruler
+set tabstop=4 expandtab
+set list listchars=trail:-
 
 let g:airline#extensions#tabline#enabled = 1
 

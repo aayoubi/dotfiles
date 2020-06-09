@@ -29,8 +29,8 @@ fi
 # export PATH="/work/tools/Ubuntu/anaconda2/bin:$PATH"
 # export PATH=/usr/local/lib/python2.7.12/bin:$PATH
 # export PYTHONHOME=/usr/local/lib/python2.7.12
-export PATH=/home/aayoubi/local/bin:$PATH
-export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
+# export PATH=/home/aayoubi/local/bin:$PATH
+# export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
 export PAGER=less
 export LESS="-X -R"
 export HISTTIMEFORMAT='%F %T '
@@ -99,3 +99,6 @@ mkdir -p ${MARKPATH}
 complete -F _completemarks jump unmark
 
 PROMPT_COMMAND='echo -ne "\033]0;`hostname`:  ${PWD} - `$WHOAMI` \007"'
+source <(kubectl completion bash)
+alias k=kubectl
+complete -F __start_kubectl k

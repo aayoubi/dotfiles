@@ -5,6 +5,12 @@ case $- in
 esac
 
 export TERM=xterm-256color
+export PAGER=less
+export LESS="-X -R"
+export HISTTIMEFORMAT='%F %T '
+export HISTSIZE=1000
+export HISTFILESIZE=2000
+export HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -25,19 +31,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# exports
-# export PATH="/work/tools/Ubuntu/anaconda2/bin:$PATH"
-# export PATH=/usr/local/lib/python2.7.12/bin:$PATH
-# export PYTHONHOME=/usr/local/lib/python2.7.12
-# export PATH=/home/aayoubi/local/bin:$PATH
-# export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
-export PAGER=less
-export LESS="-X -R"
-export HISTTIMEFORMAT='%F %T '
-export HISTSIZE=1000
-export HISTFILESIZE=2000
-export HISTCONTROL=ignoreboth
-
 # aliases
 alias rebash='source ~/.bashrc'
 alias lls='ls -ltr'
@@ -55,17 +48,13 @@ alias agp='ack-grep --passthru'
 alias hg='history | grep'
 alias pe='perl -pe'
 alias ipe='perl -i -pe'
-
-alias p4d="p4 describe"
-alias p4c="p4 changes -u aayoubi -s pending"
 alias fargs="find . -type f | xargs"
 
-# quick funcs
+# funcs instead of complicated aliases
 aussh() { h=$1; shift; ssh autoengine@${h} $@; }
 xless() { xmllint --format $1 | less ; }
 wless() { cut -c -$COLUMNS $1 | less; }
 psllo() { ps -fp $(pwdx $(ps -e | awk '{print $1}' | grep -v PID ) 2>/dev/null | grep $PWD | cut -d: -f1 | tr '\n' , | perl -pe "s#(.*),#\1#"); }
-prllo() { prstat -p $(pwdx $(ps -e | awk '{print $1}') 2>/dev/null | grep $PWD | cut -d: -f1 | tr '\n' ,); }
 qjstack() { local tag=$2; [[ -z "$tag" ]] && tag="tmp"; local tmpfile=$(mktemp -p . "j${tag}.${1}.XXXXX" ); jstack $1 > $tmpfile; echo $tmpfile; }
 qpstack() { local tag=$2; [[ -z "$tag" ]] && tag="tmp"; local tmpfile=$(mktemp -p . "p${tag}.${1}.XXXXX" ); pstack $1 > $tmpfile; echo $tmpfile; }
 pss() { ps -fu $(whoami); }
@@ -99,6 +88,9 @@ mkdir -p ${MARKPATH}
 complete -F _completemarks jump unmark
 
 PROMPT_COMMAND='echo -ne "\033]0;`hostname`:  ${PWD} - `$WHOAMI` \007"'
-source <(kubectl completion bash)
-alias k=kubectl
-complete -F __start_kubectl k
+
+if command -v kubectl; then
+    source <(kubectl completion bash)
+    alias k=kubectl
+    complete -F __start_kubectl k
+fi

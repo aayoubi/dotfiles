@@ -1,0 +1,16 @@
+[user]
+	name = Ali
+	email = hidden
+	co = checkout
+	com = commit
+	st = status
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+[core]
+	autocrlf = input
+	editor = vim
+[alias]
+	st = status -sb
+	lg = log --oneline --decorate
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+[color]
+	ui = true

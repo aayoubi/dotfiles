@@ -7,6 +7,8 @@ bindkey -e
 alias lls='ls -ltr'
 alias ll='ls -l'
 alias k='kubectl'
+alias tmux='tmux -u'
+alias tmat='tmux new-session -ADs main'
 
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH

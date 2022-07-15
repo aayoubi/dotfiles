@@ -43,7 +43,7 @@ call vundle#end()
 filetype plugin indent on
 set t_Co=256
 set t_ut=
-" colorscheme codedark
-colorscheme solarized
+colorscheme codedark
+" colorscheme solarized
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme = 'codedark'

@@ -3,22 +3,19 @@
 git submodule init
 set +e
 git submodule --quiet add --force https://github.com/VundleVim/Vundle.vim.git vim/bundle/Vundle.vim
+git submodule --quiet add --force https://github.com/tmux-plugins/tpm tmux/plugins/tpm
 set -e
 git submodule update
 git submodule foreach git pull origin master --recurse-submodules
 
-set +e
-rm -i ~/.bashrc ~/.vimrc ~/.gitconfig ~/.zshrc ~/.tmux.conf
-set -e
+ln -fs $(pwd)/bashrc ~/.bashrc
+ln -fs $(pwd)/vimrc ~/.vimrc
+ln -fs $(pwd)/gitconfig ~/.gitconfig
+ln -fs $(pwd)/zshrc ~/.zshrc
+ln -fs $(pwd)/tmux.conf ~/.tmux.conf
 
-ln -s $(pwd)/bashrc ~/.bashrc
-ln -s $(pwd)/vimrc ~/.vimrc
-ln -s $(pwd)/gitconfig ~/.gitconfig
-ln -s $(pwd)/zshrc ~/.zshrc
-ln -s $(pwd)/tmux.conf ~/.tmux.conf
-
-mkdir -p ~/.vim/colors/
-cp vim/colors/wombat256mod.vim  ~/.vim/colors/
-cp -pr vim/bundle  ~/.vim/
+mkdir -p ~/.vim ~/.tmux
+rsync -a vim/ ~/.vim
+rsync -a tmux/ ~/.tmux
 
 echo 'dotfiles deployed'

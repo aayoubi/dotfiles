@@ -14,6 +14,8 @@ sync:
 
 clean:
 	rm -f ~/.vimrc 
+	rm -f ~/.bashrc
+	rm -f ~/.zshrc
 	rm -f ~/.config/nvim/init.lua
 	rm -f ~/.tmux.conf
 	rm -f ~/.gitconfig

@@ -108,3 +108,8 @@ unset __conda_setup
 
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:/opt/nvim-linux64/bin"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+alias vi=nvim
+alias vim=nvim

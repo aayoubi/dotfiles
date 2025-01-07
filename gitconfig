@@ -1,12 +1,12 @@
 [user]
-	name = Ali
-	email = aayoubi@users.noreply.github.com
+  name = Ali
+  email = aayoubi@users.noreply.github.com
 	co = checkout
 	com = commit
 	st = status
 	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 [core]
-	autocrlf = input
+	autocrlf = false
 	editor = vim
 [alias]
 	st = status -sb
@@ -14,3 +14,5 @@
 	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 [color]
 	ui = true
+[init]
+	defaultBranch = main

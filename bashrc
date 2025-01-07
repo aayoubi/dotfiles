@@ -1,7 +1,7 @@
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+*i*) ;;
+*) return ;;
 esac
 
 export TERM=xterm-256color
@@ -24,11 +24,11 @@ shopt -s histappend
 #shopt -s globstar
 
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  alias ls='ls --color=auto'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
 fi
 
 # aliases
@@ -50,34 +50,38 @@ alias pe='perl -pe'
 alias ipe='perl -i -pe'
 alias fargs="find . -type f | xargs"
 
-xless() { xmllint --format $1 | less ; }
+xless() { xmllint --format $1 | less; }
 wless() { cut -c -$COLUMNS $1 | less; }
-pshere() { ps -fp $(pwdx $(ps -e | awk '{print $1}' | grep -v PID ) 2>/dev/null | grep $PWD | cut -d: -f1 | tr '\n' , | perl -pe "s#(.*),#\1#"); }
+pshere() { ps -fp $(pwdx $(ps -e | awk '{print $1}' | grep -v PID) 2>/dev/null | grep $PWD | cut -d: -f1 | tr '\n' , | perl -pe "s#(.*),#\1#"); }
 pss() { ps -fu $(whoami); }
-fp() { dir=${2:-.}; find ${dir} -name "*$1*"; }
+fp() {
+  dir=${2:-.}
+  find ${dir} -name "*$1*"
+}
 ac() { awk '{print $COL}' COL=$1; }
 
 # marks
 jump() {
-    [ -z "$1" ] && echo "mark name missing" && return 1
-    cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
+  [ -z "$1" ] && echo "mark name missing" && return 1
+  cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
 }
 mark() {
-    [ -z "$1" ] && echo "mark name missing" && return 1
-    mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
+  [ -z "$1" ] && echo "mark name missing" && return 1
+  mkdir -p "$MARKPATH"
+  ln -s "$(pwd)" "$MARKPATH/$1"
 }
 unmark() {
-    [ -z "$1" ] && echo "mark name missing" && return 1
-    rm -i "$MARKPATH/$1"
+  [ -z "$1" ] && echo "mark name missing" && return 1
+  rm -i "$MARKPATH/$1"
 }
 marks() {
-    ls -l "$MARKPATH" | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
+  ls -l "$MARKPATH" | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
 }
 _completemarks() {
-    local curw=${COMP_WORDS[COMP_CWORD]}
-    local wordlist=$(find $MARKPATH -type l -printf "%f\n")
-    COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
-    return 0
+  local curw=${COMP_WORDS[COMP_CWORD]}
+  local wordlist=$(find $MARKPATH -type l -printf "%f\n")
+  COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
+  return 0
 }
 export MARKPATH=${HOME}/.marks
 mkdir -p ${MARKPATH}
@@ -85,28 +89,45 @@ complete -F _completemarks jump unmark
 
 PROMPT_COMMAND='echo -ne "\033]0;`hostname`:  ${PWD} - `$WHOAMI` \007"'
 
-if command -v kubectl; then
-    source <(kubectl completion bash)
-    alias k=kubectl
-    complete -F __start_kubectl k
+if command -v kubectl &>/dev/null; then
+  source <(kubectl completion bash)
+  alias k=kubectl
+  complete -F __start_kubectl k
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/aayoubi/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/aayoubi/miniconda3/bin/conda' 'shell.bash' 'hook' 2>/dev/null)"
 if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
+  eval "$__conda_setup"
 else
-    if [ -f "/home/aayoubi/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/aayoubi/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/aayoubi/miniconda3/bin:$PATH"
-    fi
+  if [ -f "/home/aayoubi/miniconda3/etc/profile.d/conda.sh" ]; then
+    . "/home/aayoubi/miniconda3/etc/profile.d/conda.sh"
+  else
+    export PATH="/home/aayoubi/miniconda3/bin:$PATH"
+  fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
 export PATH="$PATH:/usr/local/go/bin"
+
+jcurl() {
+  curl $@ | jq
+}
+
+# pnpm
+export PNPM_HOME="/home/aayoubi/.local/share/pnpm"
+case ":$PATH:" in
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
 export PATH="$PATH:/opt/nvim-linux64/bin"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

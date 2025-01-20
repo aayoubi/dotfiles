@@ -29,7 +29,7 @@ setw -g mode-keys vi
 
 # status style
 set -g status-style fg=colour228,bg=colour237
-set -g status-justify centre
+set -g status-justify left
 
 # window style
 setw -g window-status-format "#[fg=colour52]#[bg=colour45] #I #[fg=colour237]#[bg=colour39] #W "
@@ -43,12 +43,12 @@ set -g pane-border-style fg=colour135
 set -g pane-active-border-style fg=colour110
 
 # status right
-set -g status-right-length 30
-set -g status-right "#(whoami) @ #H "
+set -g status-right-length 50
+set -g status-right "session-id #[fg=colour213]#S#[fg=default] :: sessions #[fg=colour154]#(exec tmux ls | wc -l) :: #(whoami) @ #H "
 
 # status left
 set -g status-left-length 100
-set -g status-left "%a %Y-%m-%d %H:%M :: #[fg=colour213]#S#[fg=default] :: #[fg=colour154]#(exec tmux ls | wc -l)"
+set -g status-left "%a %Y-%m-%d %H:%M "
 
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-resurrect'

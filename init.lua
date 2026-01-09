@@ -26,9 +26,9 @@ vim.opt.showmode = false
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.schedule(function()
-	vim.opt.clipboard = "unnamedplus"
-end)
+-- vim.schedule(function()
+-- 	vim.opt.clipboard = "unnamedplus"
+-- end)
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -88,10 +88,14 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set("n", "<left>", '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set("v", "<left>", '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set("v", "<right>", '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set("v", "<up>", '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set("v", "<down>", '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -101,6 +105,9 @@ vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left wind
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+
+vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save file" })
+vim.keymap.set("i", "jj", "<ESC>")
 
 vim.opt.shiftwidth = 4 -- number of spaces to use for each step of indent.
 vim.opt.tabstop = 4 -- number of spaces a TAB counts for
@@ -820,6 +827,7 @@ require("lazy").setup({
 	},
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
+		branch = "master",
 		build = ":TSUpdate",
 		main = "nvim-treesitter.configs", -- Sets main module to use for opts
 		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -848,6 +856,7 @@ require("lazy").setup({
 			},
 			indent = { enable = true, disable = { "ruby" } },
 		},
+
 		-- There are additional nvim-treesitter modules that you can use to interact
 		-- with nvim-treesitter. You should go explore a few and see what interests you:
 		--
@@ -1010,13 +1019,100 @@ require("lazy").setup({
 
 			-- Install golang specific config
 			require("dap-go").setup({
+				dap_configurations = {
+					{
+						-- Must be "go" or it will be ignored by the plugin
+						type = "go",
+						name = "Attach remote",
+						mode = "remote",
+						request = "attach",
+						port = "38697",
+					},
+				},
 				delve = {
-					-- On Windows delve must be run attached or it crashes.
-					-- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
+					-- the path to the executable dlv which will be used for debugging.
+					-- by default, this is the "dlv" executable on your PATH.
+					path = "dlv",
+					-- time to wait for delve to initialize the debug session.
+					-- default to 20 seconds
+					initialize_timeout_sec = 20,
+					-- a string that defines the port to start delve debugger.
+					-- default to string "${port}" which instructs nvim-dap
+					-- to start the process in a random available port.
+					-- if you set a port in your debug configuration, its value will be
+					-- assigned dynamically.
+					port = "${port}",
+					-- port = "38697",
+					-- additional args to pass to dlv
+					args = {},
+					-- the build flags that are passed to delve.
+					-- defaults to empty string, but can be used to provide flags
+					-- such as "-tags=unit" to make sure the test suite is
+					-- compiled during debugging, for example.
+					-- passing build flags using args is ineffective, as those are
+					-- ignored by delve in dap mode.
+					-- avaliable ui interactive function to prompt for arguments get_arguments
+					build_flags = {},
+					-- whether the dlv process to be created detached or not. there is
+					-- an issue on delve versions < 1.24.0 for Windows where this needs to be
+					-- set to false, otherwise the dlv server creation will fail.
+					-- avaliable ui interactive function to prompt for build flags: get_build_flags
 					detached = vim.fn.has("win32") == 0,
+					-- the current working directory to run dlv from, if other than
+					-- the current working directory.
+					cwd = nil,
 				},
 			})
 		end,
+	},
+
+	-- "tpope/vim-fugitive",
+	{
+		"NeogitOrg/neogit",
+		dependencies = {
+			"nvim-lua/plenary.nvim", -- required
+			"sindrets/diffview.nvim", -- optional - Diff integration
+
+			-- Only one of these is needed.
+			"nvim-telescope/telescope.nvim", -- optional
+			"ibhagwan/fzf-lua", -- optional
+			"echasnovski/mini.pick", -- optional
+		},
+		config = true,
+	},
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		config = function()
+			local harpoon = require("harpoon")
+			harpoon:setup()
+			vim.keymap.set("n", "<leader>a", function()
+				harpoon:list():add()
+			end, { desc = "Add buffer to harpoon" })
+			vim.keymap.set("n", "<C-e>", function()
+				harpoon.ui:toggle_quick_menu(harpoon:list())
+			end)
+
+			vim.keymap.set("n", "<C-h>", function()
+				harpoon:list():select(1)
+			end)
+			vim.keymap.set("n", "<C-t>", function()
+				harpoon:list():select(2)
+			end)
+			vim.keymap.set("n", "<C-n>", function()
+				harpoon:list():select(3)
+			end)
+			vim.keymap.set("n", "<C-s>", function()
+				harpoon:list():select(4)
+			end)
+		end,
+	},
+
+	{
+		"github/copilot.vim",
 	},
 
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
@@ -1069,3 +1165,24 @@ require("lazy").setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--
+vim.api.nvim_create_autocmd("BufWritePre", {
+	group = vim.api.nvim_create_augroup("setGoFormatting", { clear = true }),
+	pattern = "*.go",
+	callback = function()
+		local params = vim.lsp.util.make_range_params()
+		params.context = { only = { "source.organizeImports" } }
+		local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 2000)
+		for _, res in pairs(result or {}) do
+			for _, r in pairs(res.result or {}) do
+				if r.edit then
+					vim.lsp.util.apply_workspace_edit(r.edit, "utf-16")
+				else
+					vim.lsp.buf.execute_command(r.command)
+				end
+			end
+		end
+
+		vim.lsp.buf.format()
+	end,
+})

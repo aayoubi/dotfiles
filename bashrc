@@ -128,9 +128,20 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-export PATH="$PATH:/opt/nvim-linux64/bin"
+if [[ -d /opt/nvim-linux64/bin ]]; then
+  export PATH="$PATH:/opt/nvim-linux64/bin"
+fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-alias vi=nvim
-alias vim=nvim
+if command -v nvim &>/dev/null; then
+  export EDITOR=nvim
+  export VISUAL=nvim
+  alias vi=nvim
+  alias vim=nvim
+fi
+
+if [[ -f ~/.local/bin/env ]]; then
+  . "$HOME/.local/bin/env"
+  eval "$(uv generate-shell-completion bash)"
+fi

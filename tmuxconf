@@ -17,42 +17,54 @@ set -g visual-activity on
 
 bind-key c new-window -n "shell"
 bind r source-file ~/.tmux.conf \; display "tmux config reloaded"
-bind l last-window
-bind -r Left previous-window
-bind -r Right next-window
+bind m last-window
+# bind -r Left previous-window
+# bind -r Right next-window
+bind -r h previous-window
+bind -r l next-window
+bind j select-pane -D
+bind k select-pane -U
 
 set -g set-titles on
 set -g set-titles-string "tmux:#I [ #W ]"
 
-setw -g clock-mode-style 24
+# setw -g clock-mode-style 24
 setw -g mode-keys vi
 
 # status style
-set -g status-style fg=colour228,bg=colour237
-set -g status-justify left
+# set -g status-style fg=colour228,bg=colour237
+# set -g status-justify left
 
 # window style
-setw -g window-status-format "#[fg=colour52]#[bg=colour45] #I #[fg=colour237]#[bg=colour39] #W "
-setw -g window-status-current-format "#[fg=black]#[bg=colour225] *#I #[fg=brightwhite]#[bg=colour199] #W"
+# setw -g window-status-format "#[fg=colour52]#[bg=colour45] #I #[fg=colour237]#[bg=colour39] #W "
+# setw -g window-status-current-format "#[fg=black]#[bg=colour225] *#I #[fg=brightwhite]#[bg=colour199] #W"
 
 # message style
-set -g message-style fg=colour226,bg=colour235
+# set -g message-style fg=colour226,bg=colour235
 
 # pane style
-set -g pane-border-style fg=colour135
-set -g pane-active-border-style fg=colour110
+# set -g pane-border-style fg=colour135
+# set -g pane-active-border-style fg=colour110
 
 # status right
-set -g status-right-length 50
-set -g status-right "session-id #[fg=colour213]#S#[fg=default] :: sessions #[fg=colour154]#(exec tmux ls | wc -l) :: #(whoami) @ #H "
+# set -g status-right-length 50
+# set -g status-right "session-id #[fg=colour213]#S#[fg=default] :: sessions #[fg=colour154]#(exec tmux ls | wc -l) :: #(whoami) @ #H "
 
 # status left
 set -g status-left-length 100
-set -g status-left "%a %Y-%m-%d %H:%M "
+# set -g status-left "%a %Y-%m-%d %H:%M "
+
+set -g @dracula-fixed-location "Paris"
+set -g @dracula-plugins "time battery weather"
+set -g @dracula-show-fahrenheit false
+set -g @dracula-border-contrast true
+set -g @dracula-show-powerline true
+
 
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'dracula/tmux'
 run '~/.tmux/plugins/tpm/tpm'
 
 # mouse support

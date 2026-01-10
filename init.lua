@@ -30,6 +30,10 @@ vim.opt.showmode = false
 -- 	vim.opt.clipboard = "unnamedplus"
 -- end)
 
+vim.keymap.set("x", "<leader>p", [["_dP]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
+vim.keymap.set("n", "<leader>Y", [["+Y]])
+
 -- Enable break indent
 vim.opt.breakindent = true
 
@@ -92,10 +96,6 @@ vim.keymap.set("n", "<left>", '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
-vim.keymap.set("v", "<left>", '<cmd>echo "Use h to move!!"<CR>')
-vim.keymap.set("v", "<right>", '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set("v", "<up>", '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set("v", "<down>", '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -373,7 +373,9 @@ require("lazy").setup({
 			},
 		},
 	},
+
 	{ "Bilal2453/luvit-meta", lazy = true },
+
 	{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
@@ -1095,7 +1097,6 @@ require("lazy").setup({
 			vim.keymap.set("n", "<C-e>", function()
 				harpoon.ui:toggle_quick_menu(harpoon:list())
 			end)
-
 			vim.keymap.set("n", "<C-h>", function()
 				harpoon:list():select(1)
 			end)
@@ -1136,6 +1137,7 @@ require("lazy").setup({
 	--
 	--  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
 	-- { import = 'custom.plugins' },
+	{ import = "plugins" },
 	--
 	-- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
 	-- Or use telescope!

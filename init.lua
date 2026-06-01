@@ -109,8 +109,8 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save file" })
 vim.keymap.set("i", "jj", "<ESC>")
 
-vim.opt.shiftwidth = 4 -- number of spaces to use for each step of indent.
-vim.opt.tabstop = 4 -- number of spaces a TAB counts for
+vim.opt.shiftwidth = 4    -- number of spaces to use for each step of indent.
+vim.opt.tabstop = 4       -- number of spaces a TAB counts for
 vim.opt.autoindent = true -- copy indent from current line when starting a new line
 vim.opt.wrap = true
 
@@ -194,7 +194,7 @@ require("lazy").setup({
 	-- Then, because we use the `opts` key (recommended), the configuration runs
 	-- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-	{ -- Useful plugin to show you pending keybinds.
+	{                 -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
 		opts = {
@@ -237,7 +237,7 @@ require("lazy").setup({
 
 			-- Document existing key chains
 			spec = {
-				{ "<leader>c", group = "[C]ode", mode = { "n", "x" } },
+				{ "<leader>c", group = "[C]ode",     mode = { "n", "x" } },
 				{ "<leader>d", group = "[D]ocument" },
 				{ "<leader>r", group = "[R]ename" },
 				{ "<leader>s", group = "[S]earch" },
@@ -277,7 +277,7 @@ require("lazy").setup({
 			{ "nvim-telescope/telescope-ui-select.nvim" },
 
 			-- Useful for getting pretty icons, but requires a Nerd Font.
-			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
+			{ "nvim-tree/nvim-web-devicons",            enabled = vim.g.have_nerd_font },
 		},
 		config = function()
 			-- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -387,7 +387,7 @@ require("lazy").setup({
 
 			-- Useful status updates for LSP.
 			-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-			{ "j-hui/fidget.nvim", opts = {} },
+			{ "j-hui/fidget.nvim",       opts = {} },
 
 			-- Allows extra capabilities provided by nvim-cmp
 			"hrsh7th/cmp-nvim-lsp",
@@ -995,13 +995,13 @@ require("lazy").setup({
 			vim.api.nvim_set_hl(0, "DapBreak", { fg = "#e51400" })
 			vim.api.nvim_set_hl(0, "DapStop", { fg = "#ffcc00" })
 			local breakpoint_icons = vim.g.have_nerd_font
-					and {
-						Breakpoint = "",
-						BreakpointCondition = "",
-						BreakpointRejected = "",
-						LogPoint = "",
-						Stopped = "",
-					}
+				and {
+					Breakpoint = "",
+					BreakpointCondition = "",
+					BreakpointRejected = "",
+					LogPoint = "",
+					Stopped = "",
+				}
 				or {
 					Breakpoint = "●",
 					BreakpointCondition = "⊜",
@@ -1077,7 +1077,7 @@ require("lazy").setup({
 
 			-- Only one of these is needed.
 			"nvim-telescope/telescope.nvim", -- optional
-			"ibhagwan/fzf-lua", -- optional
+			"ibhagwan/fzf-lua",     -- optional
 			"echasnovski/mini.pick", -- optional
 		},
 		config = true,
@@ -1112,10 +1112,6 @@ require("lazy").setup({
 		end,
 	},
 
-	{
-		"github/copilot.vim",
-	},
-
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
 	-- init.lua. If you want these files, they are in the repository, so you can just download them and
 	-- place them in the correct locations.
@@ -1137,7 +1133,7 @@ require("lazy").setup({
 	--
 	--  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
 	-- { import = 'custom.plugins' },
-	{ import = "plugins" },
+	-- { import = "plugins" },
 	--
 	-- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
 	-- Or use telescope!

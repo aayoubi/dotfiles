@@ -128,8 +128,8 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-if [[ -d /opt/nvim-linux64/bin ]]; then
-  export PATH="$PATH:/opt/nvim-linux64/bin"
+if [[ -d /opt/nvim-linux-x86_64/bin ]]; then
+  export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

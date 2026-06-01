@@ -35,13 +35,12 @@ fi
 alias rebash='source ~/.bashrc'
 alias lls='ls -ltr'
 alias xcat='xmllint --format'
-alias lls="ls -ltr"
 alias l="less"
 alias listd="ls -ltr | grep ^d"
 alias igrep="grep -i"
 alias llo="lsof +d ."
 alias pysmp="python -m SimpleHTTPServer"
-alias tmat="tmux attach"
+alias tmat="tmux new-session -ADs main"
 alias giturl="git remote set-url origin"
 alias duf='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
 alias agp='ack-grep --passthru'
@@ -101,14 +100,14 @@ export NVM_DIR="$HOME/.nvm"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/aayoubi/miniconda3/bin/conda' 'shell.bash' 'hook' 2>/dev/null)"
+__conda_setup="$("$HOME/miniconda3/bin/conda" 'shell.bash' 'hook' 2>/dev/null)"
 if [ $? -eq 0 ]; then
   eval "$__conda_setup"
 else
-  if [ -f "/home/aayoubi/miniconda3/etc/profile.d/conda.sh" ]; then
-    . "/home/aayoubi/miniconda3/etc/profile.d/conda.sh"
+  if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+    . "$HOME/miniconda3/etc/profile.d/conda.sh"
   else
-    export PATH="/home/aayoubi/miniconda3/bin:$PATH"
+    export PATH="$HOME/miniconda3/bin:$PATH"
   fi
 fi
 unset __conda_setup
@@ -121,7 +120,7 @@ jcurl() {
 }
 
 # pnpm
-export PNPM_HOME="/home/aayoubi/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
 *":$PNPM_HOME:"*) ;;
 *) export PATH="$PNPM_HOME:$PATH" ;;

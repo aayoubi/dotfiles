@@ -80,8 +80,11 @@ vim.opt.scrolloff = 10
 --  See `:help hlsearch`
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
+vim.keymap.set("n", "<leader>q", ":q!<CR>", { desc = "Force quit" })
+vim.keymap.set("n", "<leader>z", ":wq<CR>", { desc = "Save and quit" })
+
 -- Diagnostic keymaps
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+vim.keymap.set("n", "<leader>Q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -107,12 +110,17 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower win
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save file" })
+vim.keymap.set("n", "<leader>n", ":bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<leader>N", ":bprev<CR>", { desc = "Prev buffer" })
 vim.keymap.set("i", "jj", "<ESC>")
 
-vim.opt.shiftwidth = 4    -- number of spaces to use for each step of indent.
-vim.opt.tabstop = 4       -- number of spaces a TAB counts for
-vim.opt.autoindent = true -- copy indent from current line when starting a new line
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.autoindent = true
 vim.opt.wrap = true
+vim.opt.foldlevel = 99
+vim.opt.foldenable = false
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -546,7 +554,7 @@ require("lazy").setup({
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 				-- clangd = {},
-				-- gopls = {},
+				gopls = {},
 				-- pyright = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -1097,16 +1105,16 @@ require("lazy").setup({
 			vim.keymap.set("n", "<C-e>", function()
 				harpoon.ui:toggle_quick_menu(harpoon:list())
 			end)
-			vim.keymap.set("n", "<C-h>", function()
+			vim.keymap.set("n", "<leader>1", function()
 				harpoon:list():select(1)
 			end)
-			vim.keymap.set("n", "<C-t>", function()
+			vim.keymap.set("n", "<leader>2", function()
 				harpoon:list():select(2)
 			end)
-			vim.keymap.set("n", "<C-n>", function()
+			vim.keymap.set("n", "<leader>3", function()
 				harpoon:list():select(3)
 			end)
-			vim.keymap.set("n", "<C-s>", function()
+			vim.keymap.set("n", "<leader>4", function()
 				harpoon:list():select(4)
 			end)
 		end,

@@ -1,17 +1,15 @@
 [user]
   name = Ali
   email = aayoubi@users.noreply.github.com
-	co = checkout
-	com = commit
-	st = status
-	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 [core]
 	autocrlf = false
-	editor = vim
+	editor = nvim
 [alias]
+	co = checkout
+	com = commit
 	st = status -sb
 	lg = log --oneline --decorate
-	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	hist = log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short
 [color]
 	ui = true
 [init]

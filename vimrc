@@ -22,7 +22,6 @@ nmap xv :!xmllint --noout %<CR>
 nmap <C-n> :bnext<CR>
 nmap <C-p> :bprev<CR>
 nmap \q :nohlsearch<CR>
-imap jk <Esc>
 imap jj <Esc>
 
 set incsearch

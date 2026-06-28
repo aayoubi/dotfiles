@@ -1,0 +1,97 @@
+_shell="${BASH_VERSION:+bash}${ZSH_VERSION:+zsh}"
+
+export TERM=xterm-256color
+export PAGER=less
+export LESS="-X -R"
+
+# ── PATH ─────────────────────────────────────────────────────────────────────
+
+export GOPATH="$HOME/go"
+export PATH="/usr/local/go/bin:$GOPATH/bin:$PATH"
+
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+if [[ -d /opt/nvim-linux-x86_64/bin ]]; then
+  export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+fi
+
+# ── Editor ───────────────────────────────────────────────────────────────────
+
+if command -v nvim &>/dev/null; then
+  export EDITOR=nvim
+  export VISUAL=nvim
+  alias vi=nvim
+  alias vim=nvim
+fi
+
+# ── Aliases ──────────────────────────────────────────────────────────────────
+
+alias lls='ls -ltr'
+alias ll='ls -l'
+alias l='less'
+alias igrep='grep -i'
+alias hg='history | grep'
+alias tmat='tmux new-session -ADs main'
+alias k=kubectl
+alias xcat='xmllint --format'
+alias listd='ls -ltr | grep ^d'
+alias llo='lsof +d .'
+alias pe='perl -pe'
+alias ipe='perl -i -pe'
+alias agp='ack --passthru'
+alias fargs='find . -type f | xargs'
+alias giturl='git remote set-url origin'
+alias duf='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
+
+# ── Functions ─────────────────────────────────────────────────────────────────
+
+xless()  { xmllint --format "$1" | less; }
+wless()  { cut -c -"$COLUMNS" "$1" | less; }
+pss()    { ps -fu "$(whoami)"; }
+fp()     { local dir=${2:-.}; find "$dir" -name "*$1*"; }
+ac()     { awk '{print $COL}' COL="$1"; }
+jcurl()  { curl "$@" | jq; }
+pshere() {
+  ps -fp $(pwdx $(ps -e | awk '{print $1}' | grep -v PID) 2>/dev/null \
+    | grep "$PWD" | cut -d: -f1 | tr '\n' , | perl -pe "s#(.*),#\1#")
+}
+
+# ── NVM ──────────────────────────────────────────────────────────────────────
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ "$_shell" = bash ] && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# ── conda ────────────────────────────────────────────────────────────────────
+
+__conda_setup="$("$HOME/miniconda3/bin/conda" "shell.${_shell}" hook 2>/dev/null)"
+if [ $? -eq 0 ]; then
+  eval "$__conda_setup"
+elif [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+  . "$HOME/miniconda3/etc/profile.d/conda.sh"
+else
+  export PATH="$HOME/miniconda3/bin:$PATH"
+fi
+unset __conda_setup
+
+# ── uv ───────────────────────────────────────────────────────────────────────
+
+if [ -f "$HOME/.local/bin/env" ]; then
+  . "$HOME/.local/bin/env"
+  eval "$(uv generate-shell-completion "$_shell")"
+fi
+
+# ── kubectl ──────────────────────────────────────────────────────────────────
+
+if command -v kubectl &>/dev/null; then
+  source <(kubectl completion "$_shell")
+  [ "$_shell" = bash ] && complete -F __start_kubectl k
+fi
+
+# ── fzf ──────────────────────────────────────────────────────────────────────
+
+[ -f "$HOME/.fzf.${_shell}" ] && source "$HOME/.fzf.${_shell}"

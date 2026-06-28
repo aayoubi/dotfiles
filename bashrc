@@ -1,27 +1,19 @@
-# If not running interactively, don't do anything
+# Non-interactive: bail out
 case $- in
-*i*) ;;
-*) return ;;
+  *i*) ;;
+  *) return ;;
 esac
 
-export TERM=xterm-256color
-export PAGER=less
-export LESS="-X -R"
+# ── History ──────────────────────────────────────────────────────────────────
+
 export HISTTIMEFORMAT='%F %T '
-export HISTSIZE=1000
-export HISTFILESIZE=2000
+export HISTSIZE=10000
+export HISTFILESIZE=20000
 export HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
 shopt -s histappend
+shopt -s checkwinsize
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-# shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+# ── Colors ───────────────────────────────────────────────────────────────────
 
 if [ -x /usr/bin/dircolors ]; then
   test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -31,35 +23,15 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
-# aliases
+# ── Bash-specific aliases ─────────────────────────────────────────────────────
+
 alias rebash='source ~/.bashrc'
-alias lls='ls -ltr'
-alias xcat='xmllint --format'
-alias l="less"
-alias listd="ls -ltr | grep ^d"
-alias igrep="grep -i"
-alias llo="lsof +d ."
-alias pysmp="python -m SimpleHTTPServer"
-alias tmat="tmux new-session -ADs main"
-alias giturl="git remote set-url origin"
-alias duf='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
-alias agp='ack-grep --passthru'
-alias hg='history | grep'
-alias pe='perl -pe'
-alias ipe='perl -i -pe'
-alias fargs="find . -type f | xargs"
 
-xless() { xmllint --format $1 | less; }
-wless() { cut -c -$COLUMNS $1 | less; }
-pshere() { ps -fp $(pwdx $(ps -e | awk '{print $1}' | grep -v PID) 2>/dev/null | grep $PWD | cut -d: -f1 | tr '\n' , | perl -pe "s#(.*),#\1#"); }
-pss() { ps -fu $(whoami); }
-fp() {
-  dir=${2:-.}
-  find ${dir} -name "*$1*"
-}
-ac() { awk '{print $COL}' COL=$1; }
+# ── Marks ────────────────────────────────────────────────────────────────────
 
-# marks
+export MARKPATH="${HOME}/.marks"
+mkdir -p "${MARKPATH}"
+
 jump() {
   [ -z "$1" ] && echo "mark name missing" && return 1
   cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
@@ -78,69 +50,16 @@ marks() {
 }
 _completemarks() {
   local curw=${COMP_WORDS[COMP_CWORD]}
-  local wordlist=$(find $MARKPATH -type l -printf "%f\n")
+  local wordlist
+  wordlist=$(find "$MARKPATH" -type l -printf "%f\n")
   COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
-  return 0
 }
-export MARKPATH=${HOME}/.marks
-mkdir -p ${MARKPATH}
 complete -F _completemarks jump unmark
 
-PROMPT_COMMAND='echo -ne "\033]0;`hostname`:  ${PWD} - `$WHOAMI` \007"'
+# ── Prompt ───────────────────────────────────────────────────────────────────
 
-if command -v kubectl &>/dev/null; then
-  source <(kubectl completion bash)
-  alias k=kubectl
-  complete -F __start_kubectl k
-fi
+PROMPT_COMMAND='echo -ne "\033]0;$(hostname):  ${PWD} - ${USER} \007"'
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+# ── Shared ───────────────────────────────────────────────────────────────────
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$("$HOME/miniconda3/bin/conda" 'shell.bash' 'hook' 2>/dev/null)"
-if [ $? -eq 0 ]; then
-  eval "$__conda_setup"
-else
-  if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-    . "$HOME/miniconda3/etc/profile.d/conda.sh"
-  else
-    export PATH="$HOME/miniconda3/bin:$PATH"
-  fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-export PATH="$PATH:/usr/local/go/bin"
-
-jcurl() {
-  curl $@ | jq
-}
-
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-*":$PNPM_HOME:"*) ;;
-*) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-if [[ -d /opt/nvim-linux-x86_64/bin ]]; then
-  export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
-fi
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-if command -v nvim &>/dev/null; then
-  export EDITOR=nvim
-  export VISUAL=nvim
-  alias vi=nvim
-  alias vim=nvim
-fi
-
-if [[ -f ~/.local/bin/env ]]; then
-  . "$HOME/.local/bin/env"
-  eval "$(uv generate-shell-completion bash)"
-fi
+. ~/.shellrc

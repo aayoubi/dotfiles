@@ -7,15 +7,17 @@ sync:
 
 	[ -f ~/.bashrc ] || ln -s $(PWD)/bashrc ~/.bashrc
 	[ -f ~/.zshrc ] || ln -s $(PWD)/zshrc ~/.zshrc
+	[ -f ~/.shellrc ] || ln -s $(PWD)/shellrc ~/.shellrc
 	[ -f ~/.vimrc ] || ln -s $(PWD)/vimrc ~/.vimrc
 	[ -f ~/.config/nvim/init.lua ] || ln -s $(PWD)/init.lua ~/.config/nvim/init.lua
 	[ -f ~/.tmux.conf ] || ln -s $(PWD)/tmuxconf ~/.tmux.conf
 	[ -f ~/.gitconfig ] || ln -s $(PWD)/gitconfig ~/.gitconfig
 
 clean:
-	rm -f ~/.vimrc 
+	rm -f ~/.vimrc
 	rm -f ~/.bashrc
 	rm -f ~/.zshrc
+	rm -f ~/.shellrc
 	rm -f ~/.config/nvim/init.lua
 	rm -f ~/.tmux.conf
 	rm -f ~/.gitconfig

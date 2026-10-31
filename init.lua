@@ -148,17 +148,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
-<<<<<<< Updated upstream
-=======
--- [[ Configure and install plugins ]]
---  To check the current status of your plugins, run
---    :Lazy
---  You can press `?` in this menu for help. Use `:q` to close the window
---  To update plugins you can run
---    :Lazy update
---
--- NOTE: Here is where you install your plugins.
->>>>>>> Stashed changes
 require("lazy").setup({
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 
@@ -550,7 +539,6 @@ require("lazy").setup({
 							luasnip.jump(-1)
 						end
 					end, { "i", "s" }),
-
 				}),
 				sources = {
 					{
@@ -599,44 +587,30 @@ require("lazy").setup({
 	},
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
+		lazy = false,
 		branch = "main",
 		build = ":TSUpdate",
-		main = "nvim-treesitter", -- Sets main module to use for opts
-		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 		opts = {
 			auto_install = true,
 			highlight = {
 				enable = true,
 			},
 			indent = { enable = true },
-		},
-		init = function()
-			local ensureInstalled = {
+			ensure_installed = {
 				"bash",
 				"c",
 				"diff",
 				"go",
 				"html",
 				"lua",
-				"luadoc",
 				"markdown",
-				"markdown_inline",
-				"query",
 				"vim",
 				"vimdoc",
 				"python",
 				"typescript",
 				"javascript",
-			}
-			local alreadyInstalled = require("nvim-treesitter.config").get_installed()
-			local parsersToInstall = vim.iter(ensureInstalled)
-				:filter(function(parser)
-					return not vim.tbl_contains(alreadyInstalled, parser)
-				end)
-				:totable()
-			require("nvim-treesitter").install(parsersToInstall)
-		end,
-
+			},
+		},
 		-- There are additional nvim-treesitter modules that you can use to interact
 		-- with nvim-treesitter. You should go explore a few and see what interests you:
 		--

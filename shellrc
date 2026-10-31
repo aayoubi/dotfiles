@@ -95,3 +95,10 @@ fi
 # ── fzf ──────────────────────────────────────────────────────────────────────
 
 [ -f "$HOME/.fzf.${_shell}" ] && source "$HOME/.fzf.${_shell}"
+
+# opencode
+export PATH=/home/aayoubi/.opencode/bin:$PATH
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/aayoubi/.local/bin:$PATH"
